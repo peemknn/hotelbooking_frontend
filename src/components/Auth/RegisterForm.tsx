@@ -31,7 +31,7 @@ export default function RegisterForm() {
     email: z.string().email({
       message: "Invalid email address.",
     }),
-    password: z.string().max(8, {
+    password: z.string().min(8, {
       message: "Password should be more than 8 characters.",
     }),
     tel: z.string().refine(
@@ -54,6 +54,10 @@ export default function RegisterForm() {
     },
   });
 
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+  }
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen w-screen">
       <div className="flex flex-col gap-10 pb-8 justify-center items-center">
@@ -63,7 +67,10 @@ export default function RegisterForm() {
         <h1 className="text-md font-bold">Sign Up</h1>
       </div>
       <Form {...form}>
-        <form className="space-y-5 w-full">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-5 w-full"
+        >
           <div className="flex flex-col w-full items-center">
             <FormField
               control={form.control}
@@ -78,7 +85,7 @@ export default function RegisterForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[12px] text-subtitle" />
                 </FormItem>
               )}
             />
@@ -98,7 +105,7 @@ export default function RegisterForm() {
                     />
                   </FormControl>
 
-                  <FormMessage />
+                  <FormMessage className="text-[12px] text-subtitle" />
                 </FormItem>
               )}
             />
@@ -118,7 +125,7 @@ export default function RegisterForm() {
                     />
                   </FormControl>
 
-                  <FormMessage />
+                  <FormMessage className="text-[12px] text-subtitle" />
                 </FormItem>
               )}
             />
@@ -137,7 +144,7 @@ export default function RegisterForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[12px] text-subtitle" />
                 </FormItem>
               )}
             />

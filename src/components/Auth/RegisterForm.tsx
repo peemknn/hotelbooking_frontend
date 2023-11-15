@@ -119,6 +119,7 @@ export default function RegisterForm() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
+                      type="password"
                       className="w-full rounded-md  text-sm"
                       placeholder="Enter your password"
                       {...field}

@@ -35,7 +35,9 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} ${inter.variable} font-sans`}>
+      <body
+        className={`${inder.variable} ${roboto.variable} ${inter.variable} font-sans`}
+      >
         {children}
       </body>
     </html>

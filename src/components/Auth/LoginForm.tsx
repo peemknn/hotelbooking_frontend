@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 export default function LoginForm() {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen w-screen">
-      <div className="flex flex-col gap-20 pb-8 justify-center items-center">
+      <div className="flex flex-col gap-10 pb-8 justify-center items-center">
         <Link href="/">
           <Image src={LargeLogo} alt="logo-img"></Image>
         </Link>
@@ -16,11 +16,11 @@ export default function LoginForm() {
       </div>
       <div className="pb-4 flex w-full flex-col items-center ">
         <div className="form-control w-full max-w-xs">
-          <Label className="text-md" htmlFor="email">
+          <Label className="text-sm" htmlFor="email">
             Email
           </Label>
           <Input
-            className="w-full rounded-md max-w-xs text-sm"
+            className="w-full rounded-md max-w-xs"
             type="email"
             placeholder="ex. john.smith@email.com"
           />
@@ -28,7 +28,7 @@ export default function LoginForm() {
       </div>
       <div className="pb-4 flex w-full flex-col items-center ">
         <div className="form-control w-full max-w-xs">
-          <Label className="text-md" htmlFor="password">
+          <Label className="text-sm" htmlFor="password">
             Password
           </Label>
           <Input

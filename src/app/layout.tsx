@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Inder, Roboto } from "next/font/google";
 import "./globals.css";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import NextAuthProvider from "@/providers/NextAuthProvider";
 
 const roboto = Roboto({
   weight: "400",
@@ -33,10 +36,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
   return (
     <html lang="en">
       <body className={`${roboto.variable} ${inter.variable} font-sans`}>
-        {children}
+        <NextAuthProvider session={session}>{children}</NextAuthProvider>
       </body>
     </html>
   );

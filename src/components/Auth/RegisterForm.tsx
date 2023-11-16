@@ -1,10 +1,10 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { Label } from "@radix-ui/react-label";
 import LargeLogo from "@/../public/assets/logo/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import userRegister from "@/lib/applibs/userRegister";
 import {
   Form,
   FormControl,
@@ -17,6 +17,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { log } from "console";
 
 export default function RegisterForm() {
   const formSchema = z.object({
@@ -54,8 +55,19 @@ export default function RegisterForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    let sentData = JSON.stringify({
+      name: values.displayName,
+      email: values.email,
+      password: values.password,
+      tel: values.tel,
+    });
+    try {
+      const res = await userRegister(sentData);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

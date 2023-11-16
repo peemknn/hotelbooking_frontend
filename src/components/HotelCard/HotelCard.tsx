@@ -29,7 +29,7 @@ const HotelCard = ({
             <h2> ⭐️⭐️⭐️⭐️⭐️ </h2>
           </div>
           <div className="flex flex-col items-end bg-slate-100 p-1 rounded-xl">
-            <p className="text-lg font-bold font-inter"> {price} ฿ </p>
+            <p className="text-lg font-bold font-inter"> 1,500 ฿ </p>
             <p className="text-xs"> per night </p>
           </div>
         </div>

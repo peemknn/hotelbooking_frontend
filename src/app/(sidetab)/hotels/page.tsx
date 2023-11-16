@@ -3,9 +3,10 @@ import HotelCard from "@/components/HotelCard/HotelCard";
 import searchIcon from "./../../../../public/assets/logo/searchIcon.svg";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { usePagination } from "@/hooks/usePagination";
 import useHttp from "@/hooks/useHttp";
+import { Button } from "@/components/ui/button";
 
 export default function Hotel() {
   const [isLoading, request, data, error] = useHttp();
@@ -24,16 +25,16 @@ export default function Hotel() {
 
   if (!data) return <h1>Loading...</h1>;
   return (
-    <div className="font-inder">
+    <div className="font-inder mb-10">
       <form>
-        <div className="w-full h-[40px] flex items-center  border border-[#E4E4E7] rounded-[8px] overflow-hidden mb-8">
+        <div className="w-full h-[50px] flex items-center  border border-[#E4E4E7] rounded-[8px] overflow-hidden mb-8">
           <Image
             src={searchIcon}
             alt="search-icon"
             className=" w-6 h-6 ml-1.5"
           />
           <input
-            className="w-full bg-white focus:outline-none text-xs pl-2.5 py-2"
+            className="w-full bg-white focus:outline-none text-md pl-2.5 py-2"
             placeholder="Search Hotels..."
           />
         </div>
@@ -64,21 +65,25 @@ export default function Hotel() {
           </div>
           {page > 0 && data && (
             <div className="join mx-auto">
-              <button
+              <Button
                 onClick={goPrevPage}
-                className={`join-item btn  ${page === 1 ? "btn-disabled" : ""}`}
+                className={`join-item btn rounded-r-none  ${
+                  page === 1 ? "btn-disabled" : ""
+                }`}
               >
                 «
-              </button>
-              <button className="join-item btn bg-white">Page {page}</button>
-              <button
+              </Button>
+              <Button className="join-item btn rounded-none bg-slate-200 text-black">
+                Page {page}
+              </Button>
+              <Button
                 onClick={goNextPage}
-                className={`join-item bck btn ${
+                className={`join-item rounded-l-none btn ${
                   data.pagination.page <= page ? "btn-disabled" : ""
                 }`}
               >
                 »
-              </button>
+              </Button>
             </div>
           )}
         </div>

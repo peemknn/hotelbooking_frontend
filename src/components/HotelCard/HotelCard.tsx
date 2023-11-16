@@ -3,11 +3,11 @@ import Image from "next/image";
 const HotelCard = ({
   name,
   price,
-  location,
+  address,
 }: {
   name: string;
-  price: number;
-  location: string;
+  price?: number;
+  address: string;
 }) => {
   return (
     <div className="bg-white shadow-lg flex flex-col gap-2 p-3 rounded-xl w-full  font-inder overflow-hidden">
@@ -29,7 +29,7 @@ const HotelCard = ({
           <p className="text-xs"> per night </p>
         </div>
       </div>
-      <p className="text-xs py-2"> 📍 {location} </p>
+      <p className="text-xs py-2"> 📍 {address} </p>
     </div>
   );
 };

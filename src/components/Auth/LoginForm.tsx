@@ -5,7 +5,33 @@ import LargeLogo from "@/../public/assets/logo/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
-export default function LoginForm() {
+import { useState, useRef } from "react";
+import { signIn } from "next-auth/react";
+
+export default function LoginForm({ callbackUrl }: { callbackUrl: string }) {
+  const email = useRef("");
+  const password = useRef("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onSubmit = async () => {
+    try {
+      setIsLoading(true);
+      console.log(email, password);
+
+      const login = await signIn("credentials", {
+        email: email.current,
+        password: password.current,
+        redirect: false,
+      });
+      setIsLoading(false);
+      if (login?.ok) {
+        console.log("Login success");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen w-screen">
       <div className="flex flex-col gap-10 pb-8 justify-center items-center">
@@ -23,6 +49,7 @@ export default function LoginForm() {
             className="w-full rounded-md max-w-xs"
             type="email"
             placeholder="ex. john.smith@email.com"
+            onChange={(e) => (email.current = e.target.value)}
           />
         </div>
       </div>
@@ -35,10 +62,11 @@ export default function LoginForm() {
             className="w-full rounded-md  text-sm"
             type="password"
             placeholder="Enter your password"
+            onChange={(e) => (password.current = e.target.value)}
           />
         </div>
       </div>
-      <Button variant="default" size="sm">
+      <Button onClick={onSubmit} variant="default" size="sm">
         Login
       </Button>
     </div>

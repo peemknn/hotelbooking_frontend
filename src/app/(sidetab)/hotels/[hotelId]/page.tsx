@@ -3,9 +3,13 @@ import { DatePicker } from "@/components/ui-compound/DatePicker";
 import { Button } from "@/components/ui/button";
 import useHttp from "@/hooks/useHttp";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import createBooking from "@/lib/applibs/createBooking";
 
 const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
+  const [bookingCheckInDate, setBookingCheckInDate] = useState<Date>();
+  const [bookingCheckOutDate, setBookingCheckOutDate] = useState<Date>();
+  const [isValid, setIsvalid] = useState(false);
   const [isLoading, request, data, error] = useHttp();
   // Data from APi
 
@@ -18,6 +22,31 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
   }, []);
 
   const hotelPrice = 2588;
+
+  const handleBookingDate = () => {
+    console.log(bookingCheckInDate);
+
+    if (bookingCheckInDate && bookingCheckOutDate) {
+      const millisecondsInDay = 24 * 60 * 60 * 1000;
+      const gapInDays = Math.round(
+        (bookingCheckOutDate.getTime() - bookingCheckInDate.getTime()) /
+          millisecondsInDay
+      );
+
+      if (gapInDays > 3 || gapInDays <= 0) {
+        setIsvalid(false);
+        return;
+      } else {
+        setIsvalid(true);
+      }
+    }
+  };
+
+  const handleBooking = async () => {
+    handleBookingDate();
+    /* createBooking(params.hotelId, session.user.token); */
+    /* TODO:Sent to API  */
+  };
 
   // Format price with comma
   const hotelPriceWithComma = hotelPrice
@@ -70,19 +99,31 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
         {/* Check-in , Check-out Dates */}
         <div className="flex flex-row justify-between w-full items-center">
           <div>
-            <DatePicker />
+            <DatePicker
+              onDateChange={(value: Date) => {
+                setBookingCheckInDate(value);
+              }}
+            />
           </div>
           <div>
-            <DatePicker />
+            <DatePicker
+              onDateChange={(value: Date) => {
+                setBookingCheckOutDate(value);
+              }}
+            />
           </div>
         </div>
         <div>
           <Button
             variant={"default"}
             className="w-full shadow-lg h-[64px] font-bold text-lg"
+            onClick={handleBooking}
           >
             Book Now
           </Button>
+          {!isValid && (
+            <p className="text-red-500 mt-2">Cannot booking more than 3 days</p>
+          )}
         </div>
       </div>
     );

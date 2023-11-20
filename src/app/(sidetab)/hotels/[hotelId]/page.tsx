@@ -5,12 +5,15 @@ import useHttp from "@/hooks/useHttp";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import createBooking from "@/lib/applibs/createBooking";
+import { useSession } from "next-auth/react";
 
 const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
   const [bookingCheckInDate, setBookingCheckInDate] = useState<Date>();
   const [bookingCheckOutDate, setBookingCheckOutDate] = useState<Date>();
-  const [isValid, setIsvalid] = useState(false);
+  const [isValid, setIsvalid] = useState<boolean>();
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, request, data, error] = useHttp();
+  const { data: session } = useSession();
   // Data from APi
 
   const getHotelById = async () => {
@@ -23,27 +26,54 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
 
   const hotelPrice = 2588;
 
-  const handleBookingDate = () => {
-    console.log(bookingCheckInDate);
-
+  const handleBookingDate = async () => {
     if (bookingCheckInDate && bookingCheckOutDate) {
+      const formattedCheckInDate = new Date(bookingCheckInDate);
+      const formattedCheckOutDate = new Date(bookingCheckOutDate);
+
+      // Add one day to both check-in and check-out dates
+      formattedCheckInDate.setDate(formattedCheckInDate.getDate() + 1);
+      formattedCheckOutDate.setDate(formattedCheckOutDate.getDate() + 1);
+
+      const formattedCheckInDateString = formattedCheckInDate
+        .toISOString()
+        .split("T")[0];
+      const formattedCheckOutDateString = formattedCheckOutDate
+        .toISOString()
+        .split("T")[0];
+
+      // Now you have the formatted dates in "YYYY-MM-DD" format
+      console.log("Formatted Check-In Date:", formattedCheckInDateString);
+      console.log("Formatted Check-Out Date:", formattedCheckOutDateString);
+
       const millisecondsInDay = 24 * 60 * 60 * 1000;
       const gapInDays = Math.round(
-        (bookingCheckOutDate.getTime() - bookingCheckInDate.getTime()) /
+        (formattedCheckOutDate.getTime() - formattedCheckInDate.getTime()) /
           millisecondsInDay
       );
+      console.log(gapInDays);
 
       if (gapInDays > 3 || gapInDays <= 0) {
         setIsvalid(false);
+        setIsSubmitted(true);
         return;
       } else {
         setIsvalid(true);
+        setIsSubmitted(true);
+        if (session) {
+          const response = await createBooking(
+            params.hotelId,
+            session?.user.token,
+            formattedCheckInDateString,
+            formattedCheckOutDateString
+          );
+          console.log(response);
+        }
       }
     }
   };
 
   const handleBooking = async () => {
-    handleBookingDate();
     /* createBooking(params.hotelId, session.user.token); */
     /* TODO:Sent to API  */
   };
@@ -101,7 +131,7 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
           <div>
             <DatePicker
               onDateChange={(value: Date) => {
-                setBookingCheckInDate(value);
+                setBookingCheckInDate((prev) => value);
               }}
             />
           </div>
@@ -117,11 +147,11 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
           <Button
             variant={"default"}
             className="w-full shadow-lg h-[64px] font-bold text-lg"
-            onClick={handleBooking}
+            onClick={handleBookingDate}
           >
             Book Now
           </Button>
-          {!isValid && (
+          {!isValid && isSubmitted && (
             <p className="text-red-500 mt-2">Cannot booking more than 3 days</p>
           )}
         </div>

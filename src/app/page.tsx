@@ -1,5 +1,4 @@
 "use client";
-import HotelCard from "@/components/HotelCard/HotelCard";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 

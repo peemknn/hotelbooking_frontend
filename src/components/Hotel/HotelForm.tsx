@@ -113,167 +113,159 @@ export default function HotelForm({
   }
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen w-full w-max-xs">
-      <div className="flex flex-col gap-10 pb-8 justify-center items-center">
-        <Link href="/">
-          <Image src={LargeLogo} alt="logo-img"></Image>
-        </Link>
-        <h1 className="text-md font-bold">{name} hotel</h1>
-      </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-5 w-full flex flex-col items-center"
-        >
-          <div className="flex flex-col w-full items-center">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="form-control w-full max-w-xs">
-                  <FormLabel className="text-sm">Hotel Name</FormLabel>
-                  <FormControl className="max-w-xs  w-full ">
-                    <Input
-                      className="w-full rounded-md  text-sm"
-                      placeholder="ex. Centara Grand"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[12px] text-subtitle" />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col w-full items-center">
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem className="form-control w-full max-w-xs">
-                  <FormLabel className="text-sm">Address</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="w-full rounded-md  text-sm"
-                      placeholder="ex. 254 Sukumvit Rd."
-                      {...field}
-                    />
-                  </FormControl>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-5 w-full flex flex-col items-center"
+      >
+        <div className="flex flex-col w-full items-center">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className="form-control w-full max-w-xs">
+                <FormLabel className="text-sm">Hotel Name</FormLabel>
+                <FormControl className="max-w-xs  w-full ">
+                  <Input
+                    className="w-full rounded-md  text-sm"
+                    placeholder="ex. Centara Grand"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-[12px] text-subtitle" />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex flex-col w-full items-center">
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem className="form-control w-full max-w-xs">
+                <FormLabel className="text-sm">Address</FormLabel>
+                <FormControl>
+                  <Input
+                    className="w-full rounded-md  text-sm"
+                    placeholder="ex. 254 Sukumvit Rd."
+                    {...field}
+                  />
+                </FormControl>
 
-                  <FormMessage className="text-[12px] text-subtitle" />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col w-full items-center">
-            <FormField
-              control={form.control}
-              name="district"
-              render={({ field }) => (
-                <FormItem className="form-control w-full max-w-xs">
-                  <FormLabel>District</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      className="w-full rounded-md  text-sm"
-                      placeholder="ex. Pathum Wan"
-                      {...field}
-                    />
-                  </FormControl>
+                <FormMessage className="text-[12px] text-subtitle" />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex flex-col w-full items-center">
+          <FormField
+            control={form.control}
+            name="district"
+            render={({ field }) => (
+              <FormItem className="form-control w-full max-w-xs">
+                <FormLabel>District</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    className="w-full rounded-md  text-sm"
+                    placeholder="ex. Pathum Wan"
+                    {...field}
+                  />
+                </FormControl>
 
-                  <FormMessage className="text-[12px] text-subtitle" />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col w-full items-center">
-            <FormField
-              control={form.control}
-              name="province"
-              render={({ field }) => (
-                <FormItem className="form-control w-full max-w-xs">
-                  <FormLabel className="text-sm">Province</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="w-full rounded-md  text-sm"
-                      placeholder="ex. Bangkok"
-                      {...field}
-                    />
-                  </FormControl>
+                <FormMessage className="text-[12px] text-subtitle" />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex flex-col w-full items-center">
+          <FormField
+            control={form.control}
+            name="province"
+            render={({ field }) => (
+              <FormItem className="form-control w-full max-w-xs">
+                <FormLabel className="text-sm">Province</FormLabel>
+                <FormControl>
+                  <Input
+                    className="w-full rounded-md  text-sm"
+                    placeholder="ex. Bangkok"
+                    {...field}
+                  />
+                </FormControl>
 
-                  <FormMessage className="text-[12px] text-subtitle" />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col w-full items-center">
-            <FormField
-              control={form.control}
-              name="postalcode"
-              render={({ field }) => (
-                <FormItem className="form-control w-full max-w-xs">
-                  <FormLabel>Postal Code</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="w-full rounded-md  text-sm"
-                      placeholder="ex. 10600"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[12px] text-subtitle" />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col w-full items-center">
-            <FormField
-              control={form.control}
-              name="tel"
-              render={({ field }) => (
-                <FormItem className="form-control w-full max-w-xs">
-                  <FormLabel className="text-sm">Tel</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="w-full rounded-md  text-sm"
-                      placeholder="ex. 086-456-6789"
-                      {...field}
-                    />
-                  </FormControl>
+                <FormMessage className="text-[12px] text-subtitle" />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex flex-col w-full items-center">
+          <FormField
+            control={form.control}
+            name="postalcode"
+            render={({ field }) => (
+              <FormItem className="form-control w-full max-w-xs">
+                <FormLabel>Postal Code</FormLabel>
+                <FormControl>
+                  <Input
+                    className="w-full rounded-md  text-sm"
+                    placeholder="ex. 10600"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-[12px] text-subtitle" />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex flex-col w-full items-center">
+          <FormField
+            control={form.control}
+            name="tel"
+            render={({ field }) => (
+              <FormItem className="form-control w-full max-w-xs">
+                <FormLabel className="text-sm">Tel</FormLabel>
+                <FormControl>
+                  <Input
+                    className="w-full rounded-md  text-sm"
+                    placeholder="ex. 086-456-6789"
+                    {...field}
+                  />
+                </FormControl>
 
-                  <FormMessage className="text-[12px] text-subtitle" />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col w-full items-center">
-            <FormField
-              control={form.control}
-              name="picture"
-              render={({ field }) => (
-                <FormItem className="form-control w-full max-w-xs">
-                  <FormLabel>Picture</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="w-full rounded-md  text-sm"
-                      placeholder="ex. GoogleDrive link"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[12px] text-subtitle" />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              className="mt-4"
-              onClick={submitHandler}
-              variant="default"
-              size="sm"
-            >
-              {name} Hotel
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+                <FormMessage className="text-[12px] text-subtitle" />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex flex-col w-full items-center">
+          <FormField
+            control={form.control}
+            name="picture"
+            render={({ field }) => (
+              <FormItem className="form-control w-full max-w-xs">
+                <FormLabel>Picture</FormLabel>
+                <FormControl>
+                  <Input
+                    className="w-full rounded-md  text-sm"
+                    placeholder="ex. GoogleDrive link"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-[12px] text-subtitle" />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="mt-4"
+            onClick={submitHandler}
+            variant="default"
+            size="sm"
+          >
+            {name} Hotel
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }

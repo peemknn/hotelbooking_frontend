@@ -202,19 +202,17 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
                     Update hotel information
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="w-full h-[980px]">
-                  <HotelForm
-                    hotelId={params.hotelId}
-                    initialData={data.data}
-                    method="put"
-                    name="Update"
-                    submitHandler={closeDialog}
-                  />
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <Button variant={"default"}>Close</Button>
-                    </DialogClose>
-                  </DialogFooter>
+                <DialogContent className="w-full w-max-xs h-[760px]">
+                  <div className="flex flex-col items-center">
+                    <h1 className="text-md font-bold">Update hotel</h1>
+                    <HotelForm
+                      hotelId={params.hotelId}
+                      initialData={data.data}
+                      method="put"
+                      name="Update"
+                      submitHandler={closeDialog}
+                    />
+                  </div>
                 </DialogContent>
               </Dialog>
               <Button

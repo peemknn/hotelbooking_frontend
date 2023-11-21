@@ -1,5 +1,5 @@
 "use client";
-import HotelCard from "@/components/HotelCard/HotelCard";
+import HotelCard from "@/components/Hotel/HotelCard";
 import searchIcon from "./../../../../public/assets/logo/searchIcon.svg";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
@@ -7,10 +7,31 @@ import { use, useEffect, useRef, useState } from "react";
 import { usePagination } from "@/hooks/usePagination";
 import useHttp from "@/hooks/useHttp";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import getUserProfile from "@/lib/applibs/user/getUserProfile";
 
 export default function Hotel() {
   const [isLoading, request, data, error] = useHttp();
   const [page, goNextPage, goPrevPage, setPage] = usePagination();
+  const router = useRouter();
+  const [profileData, setProfileData] = useState(null);
+  const { data: session } = useSession();
+
+  const getProfile = async () => {
+    if (session && session.user.token) {
+      try {
+        const res = await getUserProfile(session.user.token);
+        setProfileData(res.data);
+      } catch (error) {
+        console.error(error);
+        setProfileData(null);
+      }
+    } else {
+      return;
+    }
+  };
 
   const getAllHotels = async (pageParam?: number) => {
     await request("get", "/hotels", {
@@ -21,6 +42,7 @@ export default function Hotel() {
 
   useEffect(() => {
     getAllHotels();
+    getProfile();
   }, [page]);
 
   if (!data) return <h1>Loading...</h1>;
@@ -41,6 +63,15 @@ export default function Hotel() {
       </form>
       <div>
         <h1 className="font-bold mb-3">All Hotels</h1>
+
+        {profileData && profileData.role == "admin" && (
+          <div className="m-2">
+            <Button size="sm" onClick={() => router.push("/hotels/add-hotel")}>
+              Add Hotel
+            </Button>
+          </div>
+        )}
+
         <div className="flex flex-col justify-center">
           <div className="w-max-xs flex flex-wrap gap-3 mb-10">
             {!isLoading &&

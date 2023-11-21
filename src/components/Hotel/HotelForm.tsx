@@ -20,17 +20,20 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { log } from "console";
 import addHotel from "@/lib/applibs/hotels/addHotel";
+import updateHotel from "@/lib/applibs/hotels/updateHotel";
 
 export default function HotelForm({
   hotelId,
   name,
   method,
   initialData,
+  submitHandler,
 }: {
   hotelId?: string;
   name: string;
   method: string;
   initialData?: any;
+  submitHandler?: any;
 }) {
   const { data: session } = useSession();
   const thaiPostalCodeRegex = /^[0-9]{5}$/;
@@ -47,7 +50,7 @@ export default function HotelForm({
     province: z.string().refine((value) => value.trim() !== "", {
       message: "Province is required.",
     }),
-    postalCode: z.string().refine((value) => thaiPostalCodeRegex.test(value), {
+    postalcode: z.string().refine((value) => thaiPostalCodeRegex.test(value), {
       message: "Invalid Thai postal code format.",
     }),
     tel: z
@@ -76,7 +79,7 @@ export default function HotelForm({
       address: initialData?.address || "",
       district: initialData?.district || "",
       province: initialData?.province || "",
-      postalCode: initialData?.postalCode || "",
+      postalcode: initialData?.postalcode || "",
       tel: initialData?.tel || "",
       picture: initialData?.picture || "",
     },
@@ -88,26 +91,34 @@ export default function HotelForm({
       address: values.address,
       district: values.district,
       province: values.province,
-      postalcode: values.postalCode,
+      postalcode: values.postalcode,
       tel: values.tel,
       picture: values.picture,
     });
     console.log(sentData);
 
-    try {
-      const res = await addHotel(sentData, session?.user.token);
-    } catch (error) {
-      console.log(error);
+    if (method == "post") {
+      try {
+        const res = await addHotel(sentData, session?.user.token);
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (method == "put") {
+      try {
+        const res = await updateHotel(hotelId, sentData, session?.user.token);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen w-screen">
+    <div className="flex flex-col justify-center items-center min-h-screen w-full w-max-xs">
       <div className="flex flex-col gap-10 pb-8 justify-center items-center">
         <Link href="/">
           <Image src={LargeLogo} alt="logo-img"></Image>
         </Link>
-        <h1 className="text-md font-bold">Add new hotel</h1>
+        <h1 className="text-md font-bold">{name} hotel</h1>
       </div>
       <Form {...form}>
         <form
@@ -197,7 +208,7 @@ export default function HotelForm({
           <div className="flex flex-col w-full items-center">
             <FormField
               control={form.control}
-              name="postalCode"
+              name="postalcode"
               render={({ field }) => (
                 <FormItem className="form-control w-full max-w-xs">
                   <FormLabel>Postal Code</FormLabel>
@@ -251,7 +262,13 @@ export default function HotelForm({
                 </FormItem>
               )}
             />
-            <Button type="submit" className="mt-4" variant="default" size="sm">
+            <Button
+              type="submit"
+              className="mt-4"
+              onClick={submitHandler}
+              variant="default"
+              size="sm"
+            >
               {name} Hotel
             </Button>
           </div>

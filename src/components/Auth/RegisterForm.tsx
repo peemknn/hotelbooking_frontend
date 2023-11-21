@@ -4,7 +4,8 @@ import LargeLogo from "@/../public/assets/logo/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import userRegister from "@/lib/applibs/userRegister";
+import userRegister from "@/lib/applibs/user/userRegister";
+import { signIn } from "next-auth/react";
 import {
   Form,
   FormControl,
@@ -64,7 +65,17 @@ export default function RegisterForm() {
     });
     try {
       const res = await userRegister(sentData);
-      console.log(res);
+
+      const login = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: true,
+        callbackUrl: "/hotels",
+      });
+
+      if (login?.ok) {
+        console.log("Login success");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -164,6 +175,17 @@ export default function RegisterForm() {
             <Button type="submit" className="mt-8" variant="default" size="sm">
               Sign Up
             </Button>
+            <p className="text-xs py-5">
+              Already have an account?{" "}
+              <span>
+                <Link
+                  href="/login"
+                  className="text-indigo-600 hover:underline underline-offset-4"
+                >
+                  Signin
+                </Link>
+              </span>
+            </p>
           </div>
         </form>
       </Form>

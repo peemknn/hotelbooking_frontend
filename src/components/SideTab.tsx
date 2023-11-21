@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,8 +17,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useSession } from "next-auth/react";
 
 export default function SideTab() {
+  const { data: session } = useSession();
+
   return (
     <div className="flex flex-row">
       <div className="absolute top-0">
@@ -46,6 +50,20 @@ export default function SideTab() {
                   </div>
                 );
               })}
+              {session ? (
+                <div className="font-inder text-center">
+                  <Link href="/api/auth/signout">Signout</Link>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="font-inder text-center">
+                    <Link href="/login">Login</Link>
+                  </div>
+                  <div className="font-inder text-center">
+                    <Link href="/register">Register</Link>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* <div className="grid gap-4 py-4">

@@ -9,9 +9,23 @@ import { useSession } from "next-auth/react";
 import getUserProfile from "@/lib/applibs/user/getUserProfile";
 import deleteHotel from "@/lib/applibs/hotels/deleteHotel";
 import { useRouter } from "next/navigation";
+import updateHotel from "@/lib/applibs/hotels/updateHotel";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import HotelForm from "@/components/Hotel/HotelForm";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
+
   const [bookingCheckInDate, setBookingCheckInDate] = useState<Date>();
   const [bookingCheckOutDate, setBookingCheckOutDate] = useState<Date>();
   const [isValid, setIsvalid] = useState<boolean>();
@@ -32,6 +46,10 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
   }, []);
 
   const hotelPrice = 2588;
+
+  const closeDialog = () => {
+    setOpen(false);
+  };
 
   const getProfile = async () => {
     if (session && session.user.token) {
@@ -178,12 +196,27 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
           </Button>
           {profileData && profileData.role === "admin" && (
             <div className="space-y-2">
-              <Button
-                className="w-full shadow-lg h-[64px] font-bold text-lg "
-                onClick={handleDeleteHotel}
-              >
-                Update hotel information
-              </Button>
+              <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger asChild>
+                  <Button className="w-full shadow-lg h-[64px] font-bold text-lg ">
+                    Update hotel information
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-full h-[980px]">
+                  <HotelForm
+                    hotelId={params.hotelId}
+                    initialData={data.data}
+                    method="put"
+                    name="Update"
+                    submitHandler={closeDialog}
+                  />
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <Button variant={"default"}>Close</Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
               <Button
                 className="w-full shadow-lg h-[64px] font-bold text-lg bg-black  hover:bg-red-500"
                 onClick={handleDeleteHotel}

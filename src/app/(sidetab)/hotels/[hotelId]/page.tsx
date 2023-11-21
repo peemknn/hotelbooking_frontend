@@ -97,7 +97,6 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
   const handleDeleteHotel = async () => {
     try {
       const response = await deleteHotel(params.hotelId, session?.user.token);
-
       console.log(response);
       router.back();
     } catch (error) {

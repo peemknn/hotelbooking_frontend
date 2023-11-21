@@ -51,8 +51,14 @@ export default function SideTab() {
                 );
               })}
               {session ? (
-                <div className="font-inder text-center">
-                  <Link href="/api/auth/signout">Signout</Link>
+                <div className="space-y-4">
+                  {" "}
+                  <div className="font-inder text-center">
+                    <Link href="/bookings">Booking</Link>
+                  </div>
+                  <div className="font-inder text-center">
+                    <Link href="/api/auth/signout">Signout</Link>
+                  </div>
                 </div>
               ) : (
                 <div className="space-y-4">

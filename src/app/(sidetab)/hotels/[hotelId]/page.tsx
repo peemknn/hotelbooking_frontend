@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import useHttp from "@/hooks/useHttp";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import createBooking from "@/lib/applibs/createBooking";
+import createBooking from "@/lib/applibs/bookings/createBooking";
 import { useSession } from "next-auth/react";
 
 const HotelPageById = ({ params }: { params: { hotelId: string } }) => {

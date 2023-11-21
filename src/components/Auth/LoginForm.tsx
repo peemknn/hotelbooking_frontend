@@ -7,10 +7,12 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { useState, useRef } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm({ callbackUrl }: { callbackUrl: string }) {
   const email = useRef("");
   const password = useRef("");
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async () => {
@@ -26,6 +28,7 @@ export default function LoginForm({ callbackUrl }: { callbackUrl: string }) {
       setIsLoading(false);
       if (login?.ok) {
         console.log("Login success");
+        router.push("/hotels");
       }
     } catch (error) {
       console.log(error);
@@ -69,6 +72,17 @@ export default function LoginForm({ callbackUrl }: { callbackUrl: string }) {
       <Button onClick={onSubmit} variant="default" size="sm">
         Login
       </Button>
+      <p className="text-xs py-5">
+        Don't have an account yet ?{" "}
+        <span>
+          <Link
+            href="/register"
+            className="text-indigo-600 hover:underline underline-offset-4"
+          >
+            Signup
+          </Link>
+        </span>
+      </p>
     </div>
   );
 }

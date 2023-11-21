@@ -178,12 +178,20 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
             Book Now
           </Button>
           {profileData && profileData.role === "admin" && (
-            <Button
-              className="w-full shadow-lg h-[64px] font-bold text-lg bg-black  hover:bg-red-500"
-              onClick={handleDeleteHotel}
-            >
-              Delete this hotel
-            </Button>
+            <div className="space-y-2">
+              <Button
+                className="w-full shadow-lg h-[64px] font-bold text-lg "
+                onClick={handleDeleteHotel}
+              >
+                Update hotel information
+              </Button>
+              <Button
+                className="w-full shadow-lg h-[64px] font-bold text-lg bg-black  hover:bg-red-500"
+                onClick={handleDeleteHotel}
+              >
+                Delete this hotel
+              </Button>
+            </div>
           )}
           {!isValid && isSubmitted && (
             <p className="text-red-500 mt-2">Cannot booking more than 3 days</p>

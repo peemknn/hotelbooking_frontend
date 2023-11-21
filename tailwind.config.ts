@@ -41,8 +41,8 @@ module.exports = {
           foreground: "hsl(var(--subtitle-foreground))",
         },
         dark: {
-          DEFAULT: "hsl(var(--darlgray))",
-          foreground: "hsl(var(--darkgray-foreground))",
+          DEFAULT: "hsl(var(--darkslate))",
+          foreground: "hsl(var(--darkslate-foreground))",
         },
         accentprimary: {
           DEFAULT: "hsl(var(--accentcoral))",

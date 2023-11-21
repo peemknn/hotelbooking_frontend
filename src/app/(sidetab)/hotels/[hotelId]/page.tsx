@@ -6,14 +6,20 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import createBooking from "@/lib/applibs/bookings/createBooking";
 import { useSession } from "next-auth/react";
+import getUserProfile from "@/lib/applibs/user/getUserProfile";
+import deleteHotel from "@/lib/applibs/hotels/deleteHotel";
+import { useRouter } from "next/navigation";
 
 const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
+  const router = useRouter();
   const [bookingCheckInDate, setBookingCheckInDate] = useState<Date>();
   const [bookingCheckOutDate, setBookingCheckOutDate] = useState<Date>();
   const [isValid, setIsvalid] = useState<boolean>();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, request, data, error] = useHttp();
+  const [profileData, setProfileData] = useState(null);
   const { data: session } = useSession();
+
   // Data from APi
 
   const getHotelById = async () => {
@@ -22,9 +28,24 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
 
   useEffect(() => {
     getHotelById();
+    getProfile();
   }, []);
 
   const hotelPrice = 2588;
+
+  const getProfile = async () => {
+    if (session && session.user.token) {
+      try {
+        const res = await getUserProfile(session.user.token);
+        setProfileData(res.data);
+      } catch (error) {
+        console.error(error);
+        setProfileData(null);
+      }
+    } else {
+      return;
+    }
+  };
 
   const handleBookingDate = async () => {
     if (bookingCheckInDate && bookingCheckOutDate) {
@@ -73,9 +94,15 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
     }
   };
 
-  const handleBooking = async () => {
-    /* createBooking(params.hotelId, session.user.token); */
-    /* TODO:Sent to API  */
+  const handleDeleteHotel = async () => {
+    try {
+      const response = await deleteHotel(params.hotelId, session?.user.token);
+
+      console.log(response);
+      router.back();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Format price with comma
@@ -143,14 +170,21 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
             />
           </div>
         </div>
-        <div>
+        <div className="space-y-2">
           <Button
-            variant={"default"}
             className="w-full shadow-lg h-[64px] font-bold text-lg"
             onClick={handleBookingDate}
           >
             Book Now
           </Button>
+          {profileData && profileData.role === "admin" && (
+            <Button
+              className="w-full shadow-lg h-[64px] font-bold text-lg bg-black  hover:bg-red-500"
+              onClick={handleDeleteHotel}
+            >
+              Delete this hotel
+            </Button>
+          )}
           {!isValid && isSubmitted && (
             <p className="text-red-500 mt-2">Cannot booking more than 3 days</p>
           )}

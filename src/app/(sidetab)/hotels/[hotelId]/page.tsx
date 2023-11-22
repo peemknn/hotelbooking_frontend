@@ -121,7 +121,6 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
       console.log(error);
     }
   };
-  console.log(data);
 
   // Format price with comma
   const hotelPriceWithComma = hotelPrice

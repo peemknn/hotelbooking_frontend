@@ -22,7 +22,7 @@ export default function BookingPage() {
   if (!bookingResponse) {
     return <h1>Loading...</h1>;
   } else if (bookingResponse.data.length == 0) {
-    return <h1>No Booking Yet.</h1>;
+    return <h1 className="text-center mt-5">No Booking Yet.</h1>;
   } else {
     return (
       <div className="w-max-xs flex flex-col gap-3 mb-10">

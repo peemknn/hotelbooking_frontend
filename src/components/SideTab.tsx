@@ -18,9 +18,29 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import getUserProfile from "@/lib/applibs/user/getUserProfile";
 
 export default function SideTab() {
+  const [profileData, setProfileData] = useState(null);
   const { data: session } = useSession();
+
+  const getProfile = async () => {
+    if (session && session.user.token) {
+      try {
+        const res = await getUserProfile(session.user.token);
+        setProfileData(res.data);
+      } catch (error) {
+        console.error(error);
+        setProfileData(null);
+      }
+    } else {
+      return;
+    }
+  };
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   return (
     <div className="flex flex-row">
@@ -97,12 +117,18 @@ export default function SideTab() {
       <div className="flex m-auto items-center pt-7">
         <Logo />
       </div>
-      <div className="relative">
-        <Avatar className="absolute top-5 right-4">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-      </div>
+      {profileData && (
+        <div className="relative">
+          <div className="absolute top-7 right-6">
+            <label
+              tabIndex={0}
+              className={`w-8 aspect-square rounded-full  flex items-center justify-center text-white bg-slate-400  cursor-pointer font-mono shadow-sm`}
+            >
+              {profileData?.name.charAt(0).toUpperCase()}
+            </label>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

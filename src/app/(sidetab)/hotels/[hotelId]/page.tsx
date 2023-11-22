@@ -234,14 +234,12 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
                 <AlertDialog>
                   <AlertDialogTrigger className="w-full">
                     <Button className="w-full shadow-lg h-[64px] font-bold text-lg bg-black  hover:bg-red-500">
-                      Delete this hotel
+                      Delete hotel
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you absolutely sure?
-                      </AlertDialogTitle>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                       <AlertDialogDescription>
                         This action cannot be undone.
                       </AlertDialogDescription>
@@ -249,7 +247,7 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction onClick={handleDeleteHotel}>
-                        Continue
+                        Delete
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>

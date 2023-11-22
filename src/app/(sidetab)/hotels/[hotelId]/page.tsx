@@ -43,7 +43,7 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
   const [isValid, setIsvalid] = useState<boolean>();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, request, data, error] = useHttp();
-  const [profileData, setProfileData] = useState(null);
+  const [profileData, setProfileData] = useState<any>(null);
   const { data: session } = useSession();
 
   // Data from APi
@@ -178,7 +178,7 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
             width={0}
             height={0}
             sizes={"120vw"}
-            className="rounded-xl w-full min-w-[300px] h-full max-h-[250px] object-cover shadow-lg"
+            className="rounded-xl w-full h-full max-h-[250px] object-cover shadow-lg"
           />
         </div>
 

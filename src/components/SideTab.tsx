@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 import getUserProfile from "@/lib/applibs/user/getUserProfile";
 
 export default function SideTab() {
-  const [profileData, setProfileData] = useState(null);
+  const [profileData, setProfileData] = useState<any>(null);
   const { data: session } = useSession();
 
   const getProfile = async () => {

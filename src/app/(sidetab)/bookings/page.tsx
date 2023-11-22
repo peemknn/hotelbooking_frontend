@@ -7,7 +7,7 @@ import Link from "next/link";
 import { convertToFulldate } from "@/utils/date";
 
 export default function BookingPage() {
-  const [bookingResponse, setBookingResponse] = useState(null);
+  const [bookingResponse, setBookingResponse] = useState<any>(null);
   const { data: session } = useSession();
 
   useEffect(() => {

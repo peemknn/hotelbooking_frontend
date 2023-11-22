@@ -11,7 +11,7 @@ export default function BookingPageById({
   params: { bookingId: string };
 }) {
   const { data: session } = useSession();
-  const [bookingDesc, setBookingDesc] = useState(null);
+  const [bookingDesc, setBookingDesc] = useState<any>(null);
 
   useEffect(() => {
     const fetchData = async () => {

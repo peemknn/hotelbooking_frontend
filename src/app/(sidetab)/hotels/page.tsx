@@ -16,7 +16,7 @@ export default function Hotel() {
   const [isLoading, request, data, error] = useHttp();
   const [page, goNextPage, goPrevPage, setPage] = usePagination();
   const router = useRouter();
-  const [profileData, setProfileData] = useState(null);
+  const [profileData, setProfileData] = useState<any>(null);
   const { data: session } = useSession();
 
   const getProfile = async () => {

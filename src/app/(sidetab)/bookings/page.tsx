@@ -17,9 +17,12 @@ export default function BookingPage() {
     };
     fetchData();
   }, []);
+  console.log(bookingResponse);
 
   if (!bookingResponse) {
     return <h1>Loading...</h1>;
+  } else if (bookingResponse.data.length == 0) {
+    return <h1>No Booking Yet.</h1>;
   } else {
     return (
       <div className="w-max-xs flex flex-col gap-3 mb-10">

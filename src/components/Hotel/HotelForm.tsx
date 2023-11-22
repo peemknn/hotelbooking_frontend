@@ -57,7 +57,7 @@ export default function HotelForm({
       .string()
       .refine(
         (value) => {
-          const phoneNumberRegex = /^\+?[0-9]+$/;
+          const phoneNumberRegex = /^\+?[0-9]+(?:-[0-9]+)*$/;
           return phoneNumberRegex.test(value);
         },
         {

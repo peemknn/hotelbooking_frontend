@@ -6,17 +6,19 @@ const HotelCard = ({
   name,
   price,
   address,
+  picture,
 }: {
   id: string;
   name: string;
   price?: number;
   address: string;
+  picture: string;
 }) => {
   return (
     <Link href={`hotels/${id}`}>
       <div className="bg-white shadow-lg flex flex-col gap-2 p-3 rounded-xl w-full  font-inder overflow-hidden">
         <Image
-          src={"/images/hotels/bangkok_s31_sukhumvit.jpeg"}
+          src={picture}
           alt="hotel"
           width={0}
           height={0}

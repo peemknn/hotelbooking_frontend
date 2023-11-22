@@ -121,6 +121,7 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
       console.log(error);
     }
   };
+  console.log(data);
 
   // Format price with comma
   const hotelPriceWithComma = hotelPrice
@@ -161,11 +162,11 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
         {/* Image */}
         <div>
           <Image
-            src="/images/hotels/bangkok_s31_sukhumvit.jpeg"
-            alt={data.picture}
+            src={data.data.picture}
+            alt="hotelbyid"
             width={0}
             height={0}
-            sizes={"100vw"}
+            sizes={"120vw"}
             className="rounded-xl w-full min-w-[300px] h-full max-h-[250px] object-cover shadow-lg"
           />
         </div>

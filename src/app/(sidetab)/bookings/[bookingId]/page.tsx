@@ -3,6 +3,7 @@ import getBooking from "@/lib/applibs/bookings/getBooking";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { convertToFulldate } from "@/utils/date";
+import getUserProfile from "@/lib/applibs/user/getUserProfile";
 
 export default function BookingPageById({
   params,

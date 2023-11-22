@@ -82,6 +82,7 @@ export default function Hotel() {
                     <HotelCard
                       id={hotel.id}
                       name={hotel.name}
+                      picture={hotel.picture}
                       address={hotel.address}
                     />
                   </div>

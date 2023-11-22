@@ -11,6 +11,18 @@ import deleteHotel from "@/lib/applibs/hotels/deleteHotel";
 import { useRouter } from "next/navigation";
 import updateHotel from "@/lib/applibs/hotels/updateHotel";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -171,15 +183,15 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
         </div>
 
         {/* Check-in , Check-out Dates */}
-        <div className="flex flex-row justify-between w-full items-center">
-          <div>
+        <div className="flex flex-row items-center w-full ">
+          <div className="flex w-1/2 justify-center">
             <DatePicker
               onDateChange={(value: Date) => {
                 setBookingCheckInDate((prev) => value);
               }}
             />
           </div>
-          <div>
+          <div className="flex w-1/2 justify-center">
             <DatePicker
               onDateChange={(value: Date) => {
                 setBookingCheckOutDate(value);
@@ -195,36 +207,63 @@ const HotelPageById = ({ params }: { params: { hotelId: string } }) => {
             Book Now
           </Button>
           {profileData && profileData.role === "admin" && (
-            <div className="space-y-2">
-              <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger asChild>
-                  <Button className="w-full shadow-lg h-[64px] font-bold text-lg ">
-                    Update hotel information
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="w-full w-max-xs h-[760px]">
-                  <div className="flex flex-col items-center">
-                    <h1 className="text-md font-bold">Update hotel</h1>
-                    <HotelForm
-                      hotelId={params.hotelId}
-                      initialData={data.data}
-                      method="put"
-                      name="Update"
-                      submitHandler={closeDialog}
-                    />
-                  </div>
-                </DialogContent>
-              </Dialog>
-              <Button
-                className="w-full shadow-lg h-[64px] font-bold text-lg bg-black  hover:bg-red-500"
-                onClick={handleDeleteHotel}
-              >
-                Delete this hotel
-              </Button>
+            <div className="flex flex-row justify-center space-x-2">
+              <div className="w-1/2">
+                <Dialog open={open} onOpenChange={setOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="w-full shadow-lg h-[64px] font-bold text-lg ">
+                      Update hotel
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="w-full w-max-xs h-[760px]">
+                    <div className="flex flex-col items-center">
+                      <h1 className="text-md font-bold">Update hotel</h1>
+                      <HotelForm
+                        hotelId={params.hotelId}
+                        initialData={data.data}
+                        method="put"
+                        name="Update"
+                        submitHandler={closeDialog}
+                      />
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
+              <div className="w-1/2">
+                <AlertDialog>
+                  <AlertDialogTrigger className="w-full">
+                    <Button className="w-full shadow-lg h-[64px] font-bold text-lg bg-black  hover:bg-red-500">
+                      Delete this hotel
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleDeleteHotel}>
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             </div>
           )}
           {!isValid && isSubmitted && (
             <p className="text-red-500 mt-2">Cannot booking more than 3 days</p>
+          )}
+          {isValid && isSubmitted && (
+            <p className="text-black mt-2">
+              Booking Done! Please check in booking page.
+            </p>
           )}
         </div>
       </div>

@@ -5,17 +5,35 @@ import getBookings from "@/lib/applibs/bookings/getBookings";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { convertToFulldate } from "@/utils/date";
+import getUserProfile from "@/lib/applibs/user/getUserProfile";
 
 export default function BookingPage() {
   const [bookingResponse, setBookingResponse] = useState<any>(null);
   const { data: session } = useSession();
+  const [profileData, setProfileData] = useState<any>(null);
+
+  const getProfile = async () => {
+    if (session && session.user.token) {
+      try {
+        const res = await getUserProfile(session.user.token);
+        setProfileData(res.data);
+        console.log("Profile Data", res.data);
+      } catch (error) {
+        console.error("Error setting profileData:", error);
+        setProfileData(null);
+      }
+    } else {
+      return;
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchBookings = async () => {
       const bookings = await getBookings(session?.user.token);
       setBookingResponse(bookings);
     };
-    fetchData();
+    fetchBookings();
+    getProfile();
   }, []);
   console.log(bookingResponse);
 
@@ -28,14 +46,15 @@ export default function BookingPage() {
       <div className="w-max-xs flex flex-col gap-3 mb-10">
         <h1 className="text-lg font-bold">My Booking</h1>
         {bookingResponse.data.map((bookingItem: any) => (
-          <Link href={`bookings/${bookingItem._id}`}>
-            <BookingCard
-              hotelName={bookingItem.hotel.name}
-              checkInDate={convertToFulldate(bookingItem.bookingDate)}
-              checkOutDate={convertToFulldate(bookingItem.checkoutDate)}
-              address={bookingItem.hotel.address}
-            />
-          </Link>
+          <BookingCard
+            bookingId={bookingItem._id}
+            hotelName={bookingItem.hotel.name}
+            checkInDate={convertToFulldate(bookingItem.bookingDate)}
+            checkOutDate={convertToFulldate(bookingItem.checkoutDate)}
+            address={bookingItem.hotel.address}
+            userId={bookingItem.user}
+            isAdmin={profileData?.role === "admin"}
+          />
         ))}
       </div>
     );

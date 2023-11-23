@@ -1,5 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
+import { DatePicker } from "../ui-compound/DatePicker";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import updateBooking from "@/lib/applibs/bookings/updateBooking";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,6 +34,7 @@ import { set } from "date-fns";
 export default function BookingCard({
   bookingId,
   hotelName,
+  hotelId,
   checkInDate,
   checkOutDate,
   address,
@@ -38,15 +43,23 @@ export default function BookingCard({
 }: {
   bookingId: string;
   hotelName: string;
+  hotelId: string;
   checkInDate: string;
   checkOutDate: string;
   address: string;
   userId: string;
   isAdmin: boolean;
 }) {
+  const [bookingCheckInDate, setBookingCheckInDate] = useState<Date>();
+  const [bookingCheckOutDate, setBookingCheckOutDate] = useState<Date>();
+  const [checkIn, setCheckIn] = useState<string>("");
+  const [checkOut, setCheckOut] = useState<string>("");
+  const [isValid, setIsvalid] = useState<boolean>();
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [dataJson, setDataJson] = useState<any>({});
   const { data: session } = useSession();
   const [open, setOpen] = useState<boolean>(false);
+
   const getBookingById = async () => {
     const data = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/bookings/${bookingId}`,
@@ -59,14 +72,26 @@ export default function BookingCard({
     setDataJson(await data.json().then((res) => res.data));
     console.log("getBookingById: ", dataJson?.data);
   };
-  useEffect(() => {
-    getBookingById();
-  }, []);
 
   const updateBookingHandler = () => {
-    // update booking
-    setOpen(true);
+    setOpen(false);
   };
+
+  const handleUpdate = async () => {
+    try {
+      const res = await updateBooking(
+        bookingId,
+        session?.user.token,
+        checkIn,
+        checkOut
+      );
+      console.log(res);
+      updateBookingHandler();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const deleteBookingHandler = async (e: any) => {
     // delete booking
     e.preventDefault();
@@ -95,27 +120,53 @@ export default function BookingCard({
       <p className="text-xs py-2"> 📍 {address} </p>
       {isAdmin && (
         <div className="flex flex-row justify-between items-center">
-          <div className="flex flex-col">
-            <p className="text-xs"> User ID: {userId} </p>
-            <div className="flex">
-              <div className="m-2">
-                <div className="w-1/2">
+          <div className="flex flex-col w-full">
+            <p className="text-xs"> Customer Name: {userId} </p>
+            <div className="flex flex-row justify-between space-x-3 w-full mt-2">
+              <div className="w-1/2">
+                <div className="w-full">
                   <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
-                      <Button className="w-full shadow-lg h-[64px] font-bold text-lg ">
+                      <Button className="w-full shadow-lg h-[48px] font-semibold font-inder ">
                         Update Booking
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="w-full w-max-xs h-[760px]">
+                    <DialogContent className="w-full w-max-xs h-[350px]">
                       <div className="flex flex-col items-center">
-                        <h1 className="text-md font-bold">Update Booking</h1>
-                        <BookingForm
-                          bookingId={bookingId}
-                          initialData={dataJson?.data}
-                          method="put"
-                          name="Update"
-                          submitHandler={() => setOpen(false)}
-                        />
+                        <h1 className="text-md font-bold mb-10">
+                          Update Booking
+                        </h1>
+                        <div className="flex flex-col items-center w-full ">
+                          <div className="flex flex-col">
+                            <Label className="text-sm" htmlFor="email">
+                              Checkin Date
+                            </Label>
+                            <Input
+                              className="w-full rounded-md max-w-xs"
+                              type="text"
+                              placeholder="ex. 2023-08-20"
+                              onChange={(e) => setCheckIn(e.target.value)}
+                            />
+                          </div>
+                          <div className="flex flex-col ">
+                            <Label className="text-sm" htmlFor="email">
+                              Checkout Date
+                            </Label>
+                            <Input
+                              className="w-full rounded-md max-w-xs"
+                              type="text"
+                              placeholder="ex. 2023-08-20"
+                              onChange={(e) => setCheckOut(e.target.value)}
+                            />
+                          </div>
+                          <Button
+                            className="shadow-lg h-[45px] mt-3 text-lg"
+                            size="md"
+                            onClick={handleUpdate}
+                          >
+                            Update Booking
+                          </Button>
+                        </div>
                       </div>
                     </DialogContent>
                   </Dialog>

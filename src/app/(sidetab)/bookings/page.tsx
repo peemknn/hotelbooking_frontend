@@ -12,6 +12,11 @@ export default function BookingPage() {
   const { data: session } = useSession();
   const [profileData, setProfileData] = useState<any>(null);
 
+  const isAdmin = () => {
+    if (profileData && profileData.role == "admin") return true;
+    return false;
+  };
+
   const getProfile = async () => {
     if (session && session.user.token) {
       try {
@@ -49,11 +54,12 @@ export default function BookingPage() {
           <BookingCard
             bookingId={bookingItem._id}
             hotelName={bookingItem.hotel.name}
+            hotelId={bookingItem.hotel._id}
             checkInDate={convertToFulldate(bookingItem.bookingDate)}
             checkOutDate={convertToFulldate(bookingItem.checkoutDate)}
             address={bookingItem.hotel.address}
-            userId={bookingItem.user}
-            isAdmin={profileData?.role === "admin"}
+            userId={bookingItem.user.name}
+            isAdmin={isAdmin()}
           />
         ))}
       </div>

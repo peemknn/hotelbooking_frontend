@@ -3,7 +3,7 @@ export default async function updateHotel(id: any, data: any, token: any) {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: data,
   });

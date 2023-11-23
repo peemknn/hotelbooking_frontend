@@ -1,7 +1,7 @@
 export default async function getBookings(token: any) {
   const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/bookings", {
     headers: {
-      authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   if (!response.ok) {

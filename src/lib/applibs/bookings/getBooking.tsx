@@ -3,7 +3,7 @@ export default async function getBooking(id: string, token: any) {
     process.env.NEXT_PUBLIC_API_URL + `/bookings/${id}`,
     {
       headers: {
-        authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     }
   );

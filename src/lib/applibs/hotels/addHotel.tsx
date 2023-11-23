@@ -3,7 +3,7 @@ export default async function addHotel(data: any, token: any) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: data,
   });

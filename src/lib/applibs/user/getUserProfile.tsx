@@ -2,7 +2,7 @@ export default async function getUserProfile(token: any) {
   const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/auth/me", {
     method: "GET",
     headers: {
-      authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   if (!response.ok) {

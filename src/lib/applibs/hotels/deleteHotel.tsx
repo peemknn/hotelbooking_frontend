@@ -4,7 +4,7 @@ export default async function deleteHotel(id: string, token: any) {
     {
       method: "DELETE",
       headers: {
-        authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     }
   );

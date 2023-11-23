@@ -13,7 +13,7 @@ export default async function createBooking(
         checkoutDate: checkOutDate,
       }),
       headers: {
-        authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     }
